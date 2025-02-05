@@ -58,6 +58,8 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.6",
     "zod": "^3.24.1",
+    "prisma": "latest",
+    "typescript": "latest",
     "@prisma/client": "latest",
     "bcryptjs": "latest"
   },

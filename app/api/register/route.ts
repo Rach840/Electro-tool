@@ -6,17 +6,17 @@ import { Role } from "@prisma/client"
 export async function POST(request: Request) {
   const { name, username, password } = await request.json()
 
-  // Check if username already exists
-  const existingUser = await prisma.user.findUnique({
-    where: { username },
-  })
-
-  if (existingUser) {
-    return NextResponse.json({ error: "Username already exists" }, { status: 400 })
-  }
-
-  // Create new user
   try {
+    // Check if username already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { username },
+    })
+
+    if (existingUser) {
+      return NextResponse.json({ error: "Username already exists" }, { status: 400 })
+    }
+
+    // Create new user
     const hashedPassword = bcrypt.hashSync(password, 10)
     const newUser = await prisma.user.create({
       data: {
