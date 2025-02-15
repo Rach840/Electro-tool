@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { withRoleAccess } from "./with-role-access"
-import type { Order } from "@prisma/client"
+import type { Order }from '@/src/db/schema'
 
 function BuyCart() {
   const [orders, setOrders] = useState<Order[]>([])

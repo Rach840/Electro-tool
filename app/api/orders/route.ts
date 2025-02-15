@@ -1,16 +1,19 @@
 import { NextResponse } from "next/server"
-import prisma from "../../../lib/prisma"
+import { db } from "@/src/db"
+import { eq } from "drizzle-orm"
+import { orders, users } from "@/src/db/schema"
 
 export async function GET() {
-  const orders = await prisma.order.findMany({
-    include: {
-      user: {
-        select: {
-          name: true,
-        },
-      },
-    },
+  const allOrders = await db
+  .select({
+    id: orders.id,
+    total: orders.total,
+    createdAt: orders.createdAt,
+    userName: users.name,
   })
-  return NextResponse.json(orders)
+  .from(orders)
+  .leftJoin(users, eq(orders.userId, users.id))
+
+  return NextResponse.json(allOrders)
 }
 

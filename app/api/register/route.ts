@@ -1,33 +1,36 @@
 import { NextResponse } from "next/server"
-import prisma from "../../../lib/prisma"
 import bcrypt from "bcryptjs"
-import { Role } from "@prisma/client"
+import { eq } from "drizzle-orm"
+import { db } from "@/src/db"
+import { users } from "@/src/db/schema"
+import { v4 as uuidv4 } from "uuid"
 
 export async function POST(request: Request) {
   const { name, username, password } = await request.json()
 
   try {
     // Check if username already exists
-    const existingUser = await prisma.user.findUnique({
-      where: { username },
-    })
+    const existingUser = await db.select().from(users).where(eq(users.username, username))
 
-    if (existingUser) {
+    if (existingUser.length) {
       return NextResponse.json({ error: "Username already exists" }, { status: 400 })
     }
 
     // Create new user
     const hashedPassword = bcrypt.hashSync(password, 10)
-    const newUser = await prisma.user.create({
-      data: {
-        name,
-        username,
-        password: hashedPassword,
-        role: Role.CLIENT, // Default role for new registrations
-      },
-    })
+      await db
+    .insert(users)
+    .values({
+      id: uuidv4(),
+      name,
+      username,
+      password: hashedPassword,
+      role: "CLIENT", // Default role for new registrations
+    }).$returningId();
 
-    const { password: _, ...userWithoutPassword } = newUser
+    const newUser = await db.select().from(users).where(eq(users.username,username ))
+
+    const { password: _, ...userWithoutPassword } = newUser[0]
     return NextResponse.json(userWithoutPassword)
   } catch (error) {
     console.error("Registration error:", error)

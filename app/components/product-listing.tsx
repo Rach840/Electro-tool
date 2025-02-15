@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useAuth } from "../contexts/auth-context"
-import type { Product } from "@prisma/client"
+import type { Product }from '@/src/db/schema'
 
 export default function ProductListing() {
   const { user } = useAuth()

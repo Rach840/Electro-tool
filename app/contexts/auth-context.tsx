@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
-import type { User } from "@prisma/client"
+import type { User } from '@/src/db/schema'
 
 type AuthContextType = {
   user: User | null

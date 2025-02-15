@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server"
-import prisma from "../../../lib/prisma"
+import { db } from "@/src/db"
+import { products } from "@/src/db/schema"
 
 export async function GET() {
-  const products = await prisma.product.findMany()
-  return NextResponse.json(products)
+  const allProducts = await db.select().from(products)
+  return NextResponse.json(allProducts)
 }
 

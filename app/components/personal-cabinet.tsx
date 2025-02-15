@@ -3,7 +3,7 @@
 import { useAuth } from "../contexts/auth-context"
 import { withRoleAccess } from "./with-role-access"
 import { useState, useEffect } from "react"
-import type { Order } from "@prisma/client"
+import type { Order } from '@/src/db/schema'
 
 function PersonalCabinet() {
   const { user } = useAuth()
