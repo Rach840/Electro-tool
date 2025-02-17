@@ -6,6 +6,7 @@ import { useAuth } from "@/src/app/layouts";
 
 export default function RegistrationForm() {
     const [name, setName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -20,7 +21,7 @@ export default function RegistrationForm() {
             const response = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify({ name,lastName, email, password }),
             });
 
             if (response.ok) {
@@ -47,20 +48,37 @@ export default function RegistrationForm() {
             onSubmit={handleSubmit}
             className="bg-white shadow rounded-lg p-6"
         >
-            <h2 className="text-2xl font-bold mb-4">Register</h2>
+            <h2 className="text-2xl font-bold mb-4">Регистрация</h2>
             {error && <p className="text-red-500 mb-4">{error}</p>}
             <div className="mb-4">
                 <label
                     htmlFor="name"
                     className="block text-gray-700 font-bold mb-2"
                 >
-                    Name
+                    Имя
                 </label>
                 <input
                     type="text"
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    className="w-full px-3 py-2 border rounded-lg"
+                    required
+                />
+            </div>
+
+            <div className="mb-4">
+                <label
+                    htmlFor="lastName"
+                    className="block text-gray-700 font-bold mb-2"
+                >
+                    Фамилия
+                </label>
+                <input
+                    type="text"
+                    id="lastName"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                     className="w-full px-3 py-2 border rounded-lg"
                     required
                 />
@@ -86,7 +104,7 @@ export default function RegistrationForm() {
                     htmlFor="password"
                     className="block text-gray-700 font-bold mb-2"
                 >
-                    Password
+                    Пароль
                 </label>
                 <input
                     type="password"
@@ -101,7 +119,7 @@ export default function RegistrationForm() {
                 type="submit"
                 className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
-                Register
+                Зарегистрироваться
             </button>
         </form>
     );

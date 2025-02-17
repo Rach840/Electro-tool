@@ -25,15 +25,15 @@ export default function LoginForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="bg-white shadow rounded-lg p-6"
+            className="bg-white mx-auto lg:w-4/12 shadow rounded-lg p-6"
         >
-            <h2 className="text-2xl font-bold mb-4">Login</h2>
+            <h2 className="text-2xl font-bold mb-4">Авторизация</h2>
             <div className="mb-4">
                 <label
                     htmlFor="email"
                     className="block text-gray-700 font-bold mb-2"
                 >
-                    Электронная почтв
+                    Электронная почта
                 </label>
                 <input
                     type="text"
@@ -49,7 +49,7 @@ export default function LoginForm() {
                     htmlFor="password"
                     className="block text-gray-700 font-bold mb-2"
                 >
-                    Password
+                    Пароль
                 </label>
                 <input
                     type="password"
@@ -64,15 +64,15 @@ export default function LoginForm() {
                 type="submit"
                 className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
-                Login
+                Войти
             </button>
             <p className="mt-4 text-center">
-                Don't have an account?{" "}
+                У вас нету аккаунта?{" "}
                 <Link
                     href="/register"
                     className="text-blue-500 hover:underline"
                 >
-                    Register here
+                    Зарегистрироваться здесь
                 </Link>
             </p>
         </form>

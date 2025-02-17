@@ -6,7 +6,7 @@ import { carts, users } from "@/src/db/schema";
 import { v4 as uuidv4 } from "uuid";
 
 export async function POST(request: Request) {
-    const { name, email, password } = await request.json();
+    const { name,lastName, email, password } = await request.json();
 
     try {
         // Check if email already exists
@@ -32,6 +32,7 @@ export async function POST(request: Request) {
             .values({
                 id: id,
                 name,
+                lastName,
                 email,
                 password: hashedPassword,
                 role: "CLIENT", // Default role for new registrations
