@@ -4,9 +4,9 @@ import CabinetSkeleton from "@/src/pages/cabinet/ui/cabinet-skeleton";
 import { Suspense } from "react";
 
 export function CabinetPage() {
-    return (
-        <Layout>
-            <PersonalCabinet />
-        </Layout>
-    );
+  return (
+    <Layout>
+      <PersonalCabinet />
+    </Layout>
+  );
 }

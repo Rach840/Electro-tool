@@ -6,8 +6,8 @@ import { cartItems, carts, orders, users } from "@/src/db/schema";
 import { v4 as uuidv4 } from "uuid";
 
 export async function POST(request: Request) {
-    const cartItemId = await request.json();
+  const cartItemId = await request.json();
 
-    await db.delete(cartItems).where(eq(cartItemId, cartItems.id));
-    return NextResponse.json("success");
+  await db.delete(cartItems).where(eq(cartItemId, cartItems.id));
+  return NextResponse.json("success");
 }
