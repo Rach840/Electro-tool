@@ -5,12 +5,9 @@ import { users } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function POST(request: Request) {
-    const { username, password } = await request.json();
+    const { email, password } = await request.json();
 
-    const user = await db
-        .select()
-        .from(users)
-        .where(eq(users.username, username));
+    const user = await db.select().from(users).where(eq(users.email, email));
 
     if (!user || !bcrypt.compareSync(password, user[0].password)) {
         return NextResponse.json(

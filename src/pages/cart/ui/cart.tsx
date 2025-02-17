@@ -32,7 +32,7 @@ export default function Cart() {
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     function updateQuantity(id, variant: string): void {
         const cartItemQuantity = cart.find((item) => item.orderItem.id == id);
-        console.log(cartItemQuantity);
+
         cartItemQuantity.orderItem.quantity =
             variant == "plus"
                 ? cartItemQuantity.orderItem.quantity + 1
@@ -51,8 +51,30 @@ export default function Cart() {
                 ? item.orderItem.quantity == cartItemQuantity.orderItem.quantity
                 : false;
         });
-        setCart([]);
         setCart(cartNew);
+    }
+
+    function deleteCart(id: string) {
+        fetch(`/api/cart/delete-cart`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(id),
+        });
+        const cartItemIndex = cart.findIndex(
+            (item, index) => item.orderItem.id == id,
+        );
+        let cartNew = cart.splice(0);
+        cartNew.splice(cartItemIndex, 1);
+        setCart(cartNew);
+    }
+    function createOrder() {
+        const cartItemsId = cart.map((item) => item.orderItem.id);
+        const cartProductsId = cart.map((item) => item.product.id);
+        fetch(`/api/orders/set-order`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify([user.id, cartProductsId, cartItemsId]),
+        });
     }
     const total = cart.reduce(
         (sum, item) => sum + item.product.price * item.orderItem.quantity,
@@ -113,7 +135,11 @@ export default function Cart() {
                                 <span className="sr-only">Increase</span>
                             </Button>
                         </div>
-                        <Button variant="destructive" size="icon">
+                        <Button
+                            variant="destructive"
+                            onClick={() => deleteCart(item.orderItem.id)}
+                            size="icon"
+                        >
                             <Trash2 className="h-4 w-4" />
                         </Button>
                     </div>
@@ -123,7 +149,9 @@ export default function Cart() {
                 <p className="text-xl font-semibold">Total:</p>
                 <p className="text-xl font-bold">${total.toFixed(2)}</p>
             </div>
-            <Button className="w-full">Proceed to Checkout</Button>
+            <Button onClick={createOrder} className="w-full">
+                Proceed to Checkout
+            </Button>
         </div>
     );
 

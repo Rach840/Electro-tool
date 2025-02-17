@@ -6,18 +6,20 @@ import { carts, users } from "@/src/db/schema";
 import { v4 as uuidv4 } from "uuid";
 
 export async function POST(request: Request) {
-    const { name, username, password } = await request.json();
+    const { name, email, password } = await request.json();
 
     try {
-        // Check if username already exists
+        // Check if email already exists
         const existingUser = await db
             .select()
             .from(users)
-            .where(eq(users.username, username));
+            .where(eq(users.email, email));
 
         if (existingUser.length) {
             return NextResponse.json(
-                { error: "Username already exists" },
+                {
+                    error: "Пользователь с такой электронной почтой уже существует",
+                },
                 { status: 400 },
             );
         }
@@ -30,7 +32,7 @@ export async function POST(request: Request) {
             .values({
                 id: id,
                 name,
-                username,
+                email,
                 password: hashedPassword,
                 role: "CLIENT", // Default role for new registrations
             })
@@ -42,7 +44,7 @@ export async function POST(request: Request) {
         const newUser = await db
             .select()
             .from(users)
-            .where(eq(users.username, username));
+            .where(eq(users.email, email));
 
         const { password: _, ...userWithoutPassword } = newUser[0];
         return NextResponse.json(userWithoutPassword);

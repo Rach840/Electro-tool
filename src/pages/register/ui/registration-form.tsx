@@ -6,7 +6,7 @@ import { useAuth } from "@/src/app/layouts";
 
 export default function RegistrationForm() {
     const [name, setName] = useState("");
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const router = useRouter();
@@ -20,12 +20,12 @@ export default function RegistrationForm() {
             const response = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, username, password }),
+                body: JSON.stringify({ name, email, password }),
             });
 
             if (response.ok) {
                 // Log the user in after successful registration
-                const success = await login(username, password);
+                const success = await login(email, password);
                 if (success) {
                     router.push("/cabinet");
                 } else {
@@ -67,16 +67,16 @@ export default function RegistrationForm() {
             </div>
             <div className="mb-4">
                 <label
-                    htmlFor="username"
+                    htmlFor="email"
                     className="block text-gray-700 font-bold mb-2"
                 >
-                    Username
+                    Электронная почта
                 </label>
                 <input
                     type="text"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-3 py-2 border rounded-lg"
                     required
                 />

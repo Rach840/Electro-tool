@@ -4,7 +4,7 @@ import { useAuth } from "./layouts";
 import { useRouter } from "next/navigation";
 import type React from "react"; // Added import for React
 
-type AllowedRoles = "Client" | "SalesManager" | "CEO";
+type AllowedRoles = "CLIENT" | "SALES_MANAGER" | "CEO";
 
 export function withRoleAccess(
     WrappedComponent: React.ComponentType,

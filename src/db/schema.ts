@@ -10,7 +10,10 @@ import { relations } from "drizzle-orm";
 export const users = mysqlTable("Users", {
     id: varchar("id", { length: 255 }).primaryKey().notNull(),
     name: varchar("name", { length: 255 }).notNull(),
-    username: varchar("username", { length: 255 }).notNull().unique(),
+    lastName: varchar("lastName", { length: 255 }).notNull().default(""),
+    email: varchar("email", { length: 255 }).notNull().unique(),
+    address: varchar("address", { length: 255 }),
+    phone: varchar("phone", { length: 20 }).default(""),
     password: varchar("password", { length: 255 }).notNull(),
     role: mysqlEnum("role", ["CLIENT", "SALES_MANAGER", "CEO"]).notNull(),
     createdAt: timestamp("created_at").defaultNow(),
@@ -24,6 +27,7 @@ export const products = mysqlTable("Products", {
     category: varchar("category", { length: 255 }).notNull(),
     rating: int("rating").notNull(),
     createdAt: timestamp("created_at").defaultNow(),
+    balance: int("balance"),
 });
 
 export const orders = mysqlTable("Orders", {
@@ -31,6 +35,7 @@ export const orders = mysqlTable("Orders", {
     userId: varchar("user_id", { length: 255 }).notNull(),
     total: int("total").notNull(),
     createdAt: timestamp("created_at").defaultNow(),
+    status: mysqlEnum("status", ["DELIVERED", "PROCESSED", "FAILED"]).notNull(),
 });
 
 export const orderItems = mysqlTable("OrderItems", {

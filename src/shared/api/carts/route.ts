@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export async function POST(request: Request) {
     const [userId, product] = await request.json();
-    console.log("POST", userId, product);
+
     let cart = await db
         .select({ id: carts.id })
         .from(carts)

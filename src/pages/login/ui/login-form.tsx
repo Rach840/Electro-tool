@@ -7,14 +7,14 @@ import Link from "next/link";
 import { useAuth } from "@/src/app/layouts";
 
 export default function LoginForm() {
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useAuth();
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const success = await login(username, password);
+        const success = await login(email, password);
         if (success) {
             router.push("/cabinet");
         } else {
@@ -30,16 +30,16 @@ export default function LoginForm() {
             <h2 className="text-2xl font-bold mb-4">Login</h2>
             <div className="mb-4">
                 <label
-                    htmlFor="username"
+                    htmlFor="email"
                     className="block text-gray-700 font-bold mb-2"
                 >
-                    Username
+                    Электронная почтв
                 </label>
                 <input
                     type="text"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-3 py-2 border rounded-lg"
                     required
                 />

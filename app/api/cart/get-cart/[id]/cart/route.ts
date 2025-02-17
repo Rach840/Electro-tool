@@ -1,1 +1,1 @@
-export { GET } from "@/src/pages/cart";
+export { GET } from "@/src/pages/cart/api/get-card";

@@ -31,6 +31,6 @@ export async function GET(
             product: productItem,
         };
     });
-    console.log(cartItemsFull);
+
     return NextResponse.json(cartItemsFull);
 }

@@ -38,7 +38,7 @@ export default function Products() {
     }, []);
     const allCategories = products?.map((item: Product) => item.category);
     const categories = Array.from(new Set([...allCategories]));
-    console.log(categories);
+
     const filteredProducts = products
         .filter(
             (product) =>

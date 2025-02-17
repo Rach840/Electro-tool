@@ -1,16 +1,18 @@
 "use client";
 
-import type React from "react";
-import { createContext, useContext, useState, useEffect } from "react";
+import React, { useState } from "react";
+import { createContext, useContext, useEffect } from "react";
 import type { User } from "@/src/db/schema";
+import { getCookies, deleteCookies, setCookie } from "./cookie";
+import { cookies } from "next/headers";
 
 type AuthContextType = {
     user: User | null;
-    login: (username: string, password: string) => Promise<boolean>;
+    login: (email: string, password: string) => Promise<boolean>;
     logout: () => void;
     register: (
         name: string,
-        username: string,
+        email: string,
         password: string,
     ) => Promise<boolean>;
 };
@@ -18,28 +20,33 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-    const [user, setUser] = useState<User | null>(null);
-
+    const [user, setUser] = useState<User | boolean>(false);
     useEffect(() => {
         // Check for saved user in localStorage
-        const savedUser = localStorage.getItem("user");
-        if (savedUser) {
-            setUser(JSON.parse(savedUser));
-        }
+        (async () => {
+            const savedUser = await getCookies();
+
+            if (savedUser) {
+                setUser(savedUser);
+            } else {
+                setUser(false);
+            }
+        })();
     }, []);
 
-    const login = async (username: string, password: string) => {
+    const login = async (email: string, password: string) => {
         try {
             const response = await fetch("/api/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ email, password }),
             });
 
             if (response.ok) {
                 const user = await response.json();
                 setUser(user);
-                localStorage.setItem("user", JSON.stringify(user));
+                await setCookie(JSON.stringify(user));
+
                 return true;
             }
             return false;
@@ -49,21 +56,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
-    const logout = () => {
-        setUser(null);
-        localStorage.removeItem("user");
+    const logout = async () => {
+        setUser(false);
+        await deleteCookies();
     };
 
-    const register = async (
-        name: string,
-        username: string,
-        password: string,
-    ) => {
+    const register = async (name: string, email: string, password: string) => {
         try {
             const response = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, username, password }),
+                body: JSON.stringify({ name, email, password }),
             });
 
             if (response.ok) {
