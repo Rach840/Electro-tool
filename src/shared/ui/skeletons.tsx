@@ -39,46 +39,45 @@ export function ProfileSkeleton() {
 }
 
 export function OrderSkeleton() {
-    return (
-        <Card>
-            <CardHeader>
-                <div className="flex justify-between items-center">
-                    <Skeleton className="h-8 w-[200px]" />
-                    <Skeleton className="h-6 w-[100px]" />
-                </div>
-            </CardHeader>
-            <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <Skeleton className="h-4 w-[150px] mb-2" />
-                        <Skeleton className="h-4 w-[200px] mb-1" />
-                        <Skeleton className="h-4 w-[150px]" />
-                    </div>
-                    <div>
-                        <Skeleton className="h-4 w-[150px] mb-2" />
-                        <Skeleton className="h-4 w-[250px]" />
-                    </div>
-                </div>
-                <Skeleton className="h-px w-full my-6" />
-                <Skeleton className="h-6 w-[150px] mb-4" />
-                <div className="space-y-2">
-                    {[1, 2, 3].map((i) => (
-                        <div key={i} className="flex justify-between">
-                            <Skeleton className="h-4 w-[200px]" />
-                            <Skeleton className="h-4 w-[50px]" />
-                            <Skeleton className="h-4 w-[80px]" />
-                            <Skeleton className="h-4 w-[80px]" />
-                        </div>
-                    ))}
-                </div>
-                <div className="mt-6 flex justify-end">
-                    <Skeleton className="h-6 w-[120px]" />
-                </div>
-            </CardContent>
-        </Card>
-    )
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex justify-between items-center">
+          <Skeleton className="h-8 w-[200px]" />
+          <Skeleton className="h-6 w-[100px]" />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <Skeleton className="h-4 w-[150px] mb-2" />
+            <Skeleton className="h-4 w-[200px] mb-1" />
+            <Skeleton className="h-4 w-[150px]" />
+          </div>
+          <div>
+            <Skeleton className="h-4 w-[150px] mb-2" />
+            <Skeleton className="h-4 w-[250px]" />
+          </div>
+        </div>
+        <Skeleton className="h-px w-full my-6" />
+        <Skeleton className="h-6 w-[150px] mb-4" />
+        <div className="space-y-2">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex justify-between">
+              <Skeleton className="h-4 w-[200px]" />
+              <Skeleton className="h-4 w-[50px]" />
+              <Skeleton className="h-4 w-[80px]" />
+              <Skeleton className="h-4 w-[80px]" />
+            </div>
+          ))}
+        </div>
+        <div className="mt-6 flex justify-end">
+          <Skeleton className="h-6 w-[120px]" />
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
-
 
 export function ProductGridSkeleton({ count = 6 }: { count?: number }) {
   return (

@@ -1,0 +1,1 @@
+export {GET} from '@/src/pages/products-panel/api'

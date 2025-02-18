@@ -1,0 +1,1 @@
+export {ProductsCreatePage as default} from '@/src/pages/products-panel';

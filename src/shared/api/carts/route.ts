@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/src/db";
 import { and, eq } from "drizzle-orm";
-import { cartItems, carts, orders, users } from "@/src/db/schema";
+import { cartItems, carts } from "@/src/db/schema";
 import { v4 as uuidv4 } from "uuid";
 
 export async function POST(request: Request) {

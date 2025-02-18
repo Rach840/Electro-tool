@@ -14,13 +14,7 @@ import {
 } from "@/src/shared/ui/select";
 import { Separator } from "@/src/shared/ui/separator";
 import type { Product } from "@/src/db/schema";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/src/shared/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/src/shared/ui/card";
 
 export default function Products() {
   const [searchTerm, setSearchTerm] = useState("");

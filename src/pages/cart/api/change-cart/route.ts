@@ -1,9 +1,8 @@
 "use server";
 import { NextResponse } from "next/server";
 import { db } from "@/src/db";
-import { and, eq } from "drizzle-orm";
-import { cartItems, carts, orders, users } from "@/src/db/schema";
-import { v4 as uuidv4 } from "uuid";
+import { eq } from "drizzle-orm";
+import { cartItems } from "@/src/db/schema";
 
 export async function POST(request: Request) {
   const [cartItemId, quantity] = await request.json();

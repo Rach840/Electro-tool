@@ -1,31 +1,25 @@
 "use client";
 
-import { Suspense, useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { Button } from "@/src/shared/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/src/shared/ui/card";
 import { Input } from "@/src/shared/ui/input";
 import { Label } from "@/src/shared/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/shared/ui/tabs";
 import { Separator } from "@/src/shared/ui/separator";
-import { Badge } from "@/src/shared/ui/badge";
 import {
   Package,
   MapPin,
   Settings,
   CreditCard,
-
   AlertCircle,
   RussianRuble,
-
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/src/shared/ui/avatar";
 import { useAuth } from "@/src/app/layouts";
-import { User } from "@/src/db/schema";
 import { Alert, AlertDescription, AlertTitle } from "@/src/shared/ui/alert";
 import DeliverBadge from "@/src/shared/ui/badge-deliver";
 import CabinetSkeleton from "@/src/pages/cabinet/ui/cabinet-skeleton";
-import { withRoleAccess } from "@/src/app/with-role-access";
-import { UserProfileFormProps } from "@/src/pages/cabinet/models/models";
 import {
   UserProfileFormData,
   userSchema,
@@ -40,7 +34,6 @@ import {
   AlertDialogTitle,
   AlertDialogAction,
   AlertDialogContent,
-  AlertDialogTrigger,
 } from "@/src/shared/ui/alert-dialog";
 import {
   Dialog,
@@ -83,7 +76,6 @@ export default function ProfilePage() {
 
   const {
     register,
-    handleSubmit,
     formState: { errors },
   } = useForm<UserProfileFormData>({
     resolver: zodResolver(userSchema),
@@ -198,7 +190,6 @@ export default function ProfilePage() {
                 <TabsTrigger className="text-lg" value="addresses">
                   Адресы
                 </TabsTrigger>
-
               </TabsList>
 
               <TabsContent value="personal">
@@ -428,17 +419,21 @@ export default function ProfilePage() {
                         <>
                           <Card>
                             <CardContent className="pt-6 justify-between flex">
-                              <p className="text-sm mt-2">{user?.address.slice(0,20)}...</p>
+                              <p className="text-sm mt-2">
+                                {user?.address.slice(0, 20)}...
+                              </p>
                               <div className="flex justify-between items-start mb-2">
                                 <Button
                                   variant="ghost"
                                   size="icon"
-                                  onClick={() =>{ setIsAddressDialogOpen(true); console.log(isAddressDialogOpen)}}
+                                  onClick={() => {
+                                    setIsAddressDialogOpen(true);
+                                    console.log(isAddressDialogOpen);
+                                  }}
                                 >
                                   <Settings className="h-6 w-6" />
                                 </Button>
                               </div>
-
                             </CardContent>
                           </Card>
                         </>
@@ -452,26 +447,23 @@ export default function ProfilePage() {
                         </Alert>
                       )}
                       {!user?.address ? (
-                              <Button
-                                  variant="outline"
-                                  className="h-full min-h-[120px] flex flex-col gap-2"
-                                  onClick={() => setIsAddressDialogOpen(true)}
-                              >
-                                <MapPin className="h-8 w-8" />
-                                Добавить новый адрес
-                              </Button>
-
+                        <Button
+                          variant="outline"
+                          className="h-full min-h-[120px] flex flex-col gap-2"
+                          onClick={() => setIsAddressDialogOpen(true)}
+                        >
+                          <MapPin className="h-8 w-8" />
+                          Добавить новый адрес
+                        </Button>
                       ) : (
                         ""
                       )}
                     </div>
                     <Dialog
-                        open={isAddressDialogOpen}
-                        onOpenChange={setIsAddressDialogOpen}
+                      open={isAddressDialogOpen}
+                      onOpenChange={setIsAddressDialogOpen}
                     >
-                      <DialogTrigger asChild>
-
-                      </DialogTrigger>
+                      <DialogTrigger asChild></DialogTrigger>
                       <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
                           <DialogTitle className="text-2xl">
@@ -484,30 +476,26 @@ export default function ProfilePage() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
-                            <Label htmlFor="address">
-                              Введите ваш адрес
-                            </Label>
+                            <Label htmlFor="address">Введите ваш адрес</Label>
                             <Input
-                                id="address"
-                                required
-                                defaultValue={
-                                  user.address ? user.address : ""
-                                }
-                                onChange={(e) => setAddress(e.target.value)}
+                              id="address"
+                              required
+                              defaultValue={user.address ? user.address : ""}
+                              onChange={(e) => setAddress(e.target.value)}
                             />
                           </div>
                         </div>
                         <div className="flex justify-end space-x-2 pt-4">
                           <Button
-                              type="submit"
-                              onClick={() => {
-                                if (address.length > 5) {
-                                  updateAddress(user.id, address);
-                                  setIsAddressDialogOpen(false);
-                                  setIsChangeDialogOpen(true);
-                                }
-                              }}
-                              className="bg-[#FFB800] hover:bg-[#E5A600] text-black"
+                            type="submit"
+                            onClick={() => {
+                              if (address.length > 5) {
+                                updateAddress(user.id, address);
+                                setIsAddressDialogOpen(false);
+                                setIsChangeDialogOpen(true);
+                              }
+                            }}
+                            className="bg-[#FFB800] hover:bg-[#E5A600] text-black"
                           >
                             Применить изменения
                           </Button>
@@ -517,7 +505,6 @@ export default function ProfilePage() {
                   </CardContent>
                 </Card>
               </TabsContent>
-
             </Tabs>
           </main>
         </div>

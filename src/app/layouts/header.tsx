@@ -31,6 +31,13 @@ export default function Header() {
                 >
                   Заказы пользователей
                 </Link>
+              ) : user.role === "CEO" || user.role === "STORAGE_MANAGER" ? (
+                  <Link
+                      href="/products/admin"
+                      className="text-gray-600 hover:text-gray-900"
+                  >
+                    Управление продуктами
+                  </Link>
               ) : (
                 <Link
                   href="/cart"

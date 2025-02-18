@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { createContext, useContext, useEffect } from "react";
 import type { User } from "@/src/db/schema";
 import { getCookies, deleteCookies, setCookie } from "./cookie";
-import { cookies } from "next/headers";
 
 type AuthContextType = {
   user: User | null;

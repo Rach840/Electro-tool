@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 
 import { Button } from "@/src/shared/ui/button";
-import { Input } from "@/src/shared/ui/input";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import {
   Sheet,
@@ -70,9 +69,7 @@ export default function Cart() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(id),
     });
-    const cartItemIndex = cart.findIndex(
-      (item, index) => item.orderItem.id == id,
-    );
+    const cartItemIndex = cart.findIndex((item) => item.orderItem.id == id);
     let cartNew = cart.splice(0);
     cartNew.splice(cartItemIndex, 1);
     setCart(cartNew);
@@ -116,7 +113,7 @@ export default function Cart() {
                 variant="outline"
                 size="icon"
                 className="h-8 w-8 shrink-0 rounded-full"
-                onClick={(e) => updateQuantity(item.orderItem.id, "minus")}
+                onClick={() => updateQuantity(item.orderItem.id, "minus")}
                 disabled={item.orderItem.quantity <= 1}
               >
                 <Minus />
@@ -131,7 +128,7 @@ export default function Cart() {
                 variant="outline"
                 size="icon"
                 className="h-8 w-8 shrink-0 rounded-full"
-                onClick={(e) => updateQuantity(item.orderItem.id, "plus")}
+                onClick={() => updateQuantity(item.orderItem.id, "plus")}
                 disabled={item.orderItem.quantity >= 10}
               >
                 <Plus />

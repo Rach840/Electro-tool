@@ -15,7 +15,7 @@ export const users = mysqlTable("Users", {
   address: varchar("address", { length: 255 }),
   phone: varchar("phone", { length: 20 }).default(""),
   password: varchar("password", { length: 255 }).notNull(),
-  role: mysqlEnum("role", ["CLIENT", "SALES_MANAGER", "CEO"]).notNull(),
+  role: mysqlEnum("role", ["CLIENT", "SALES_MANAGER", "CEO", 'STORAGE_MANAGER']).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -27,7 +27,8 @@ export const products = mysqlTable("Products", {
   category: varchar("category", { length: 255 }).notNull(),
   rating: int("rating").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
-  balance: int("balance"),
+  stock: int("stock"),
+  manufacturer:varchar("manufacturer", { length: 255 }).default('ООО КСТ-ИНДАСТРИС'),
 });
 
 export const orders = mysqlTable("Orders", {
