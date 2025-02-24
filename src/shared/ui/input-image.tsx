@@ -5,9 +5,10 @@ import { Input } from "./input";
 
 export const InputImage = (props: {
   onChange: (url: string) => string;
-  testId: string;
+  productId: string;
 }) => {
   const [showError, setShowError] = useState(false);
+
   return (
     <>
       <Input
@@ -18,13 +19,14 @@ export const InputImage = (props: {
           if (!file) return;
           if (file.size > 5 * 1024 * 1024) return setShowError(true);
           else setShowError(false);
-          const res = await fetch(`/api/upload-test-image/${props.testId}`, {
+          const res = await fetch(`/api/upload-product-image/${props.productId}`, {
             method: "post",
             headers: {
               "Content-Type": file.type,
             },
             body: Buffer.from(await file.arrayBuffer()),
           });
+          console.log(res)
           if (res.status != 200) return;
 
           const obj = await res.json();

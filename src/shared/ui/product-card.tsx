@@ -17,6 +17,7 @@ import { useAuth } from "@/src/app/layouts";
 type Product = {
   id: number;
   name: string;
+  image: string;
   price: number;
   category: string;
   description: string;
@@ -42,7 +43,7 @@ export default function ProductCard({ product }: { product: Product }) {
       </CardHeader>
       <CardContent>
         <img
-          src={`/placeholder.svg?height=200&width=200&text=${product.name}`}
+          src={product.image ? product.image : `/placeholder.svg?height=200&width=200&text=${product.name}`}
           alt={product.name}
           className="w-full h-48 object-cover mb-4 rounded"
         />
@@ -60,7 +61,7 @@ export default function ProductCard({ product }: { product: Product }) {
               <DialogTitle>{product.name}</DialogTitle>
             </DialogHeader>
             <img
-              src={`/placeholder.svg?height=300&width=300&text=${product.name}`}
+              src={product.image ? product.image : `/placeholder.svg?height=300&width=300&text=${product.name}`}
               alt={product.name}
               className="w-full h-64 object-cover mb-4 rounded"
             />

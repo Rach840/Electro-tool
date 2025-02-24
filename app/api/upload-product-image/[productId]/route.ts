@@ -4,13 +4,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: Promise<{ testId: string }> },
+  { params }: { params: Promise<{ productId: string }> },
 ) {
   if (!req.headers.get("Content-Type")?.startsWith("image"))
     return new NextResponse(null, { status: 400 });
-  const { testId } = await params;
+  const { productId } = await params;
+  console.log(productId)
   const Body = Buffer.from(await req.arrayBuffer());
-  const Key = `products/${testId}/${Date.now()}.png`;
+  const Key = `products/${productId}/${Date.now()}.png`;
 
   if (Body.byteLength > 5 * 1024 * 1024)
     return new NextResponse(null, { status: 400 });

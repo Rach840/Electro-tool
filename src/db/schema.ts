@@ -23,6 +23,7 @@ export const products = mysqlTable("Products", {
   id: varchar("id", { length: 255 }).primaryKey().notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   description: varchar("description", { length: 1000 }).notNull(),
+  image: varchar("image", { length: 1000 }).default(''),
   price: int("price").notNull(),
   category: varchar("category", { length: 255 }).notNull(),
   rating: int("rating").notNull(),

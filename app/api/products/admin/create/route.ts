@@ -1,0 +1,1 @@
+export {POST} from '@/src/pages/products-panel/api/product-create'

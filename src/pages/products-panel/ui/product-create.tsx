@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React, { useEffect } from "react";
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
@@ -9,10 +9,29 @@ import { Input } from "@/src/shared/ui/input"
 import { Label } from "@/src/shared/ui/label"
 import { Button } from "@/src/shared/ui/button"
 import { Textarea } from "@/src/shared/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/src/shared/ui/select"
 import { toast } from "@/src/shared/ui/use-toast"
-
+import MultipleSelector, { Option } from '@/src/shared/ui/multiple-selector';
+import type { Product } from "@/src/db/schema";
+import { InputImage } from "@/src/shared/ui/input-image";
+import { v4 as uuidv4 } from "uuid";
 export default function CreateProductPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+const productId =uuidv4()
+  useEffect(() => {
+    async function fetchProducts() {
+      const response = await fetch("/api/products");
+      const data = await response.json();
+      setProducts(data);
+    }
+    fetchProducts();
+  }, []);
+  const OPTIONS:Option[] = products?.map((item: Product) =>{
+    return {
+      label:item.category,
+      value:item.category,
+    }
+  });
+
     const router = useRouter()
     const [product, setProduct] = useState({
         name: "",
@@ -29,11 +48,10 @@ export default function CreateProductPage() {
         setProduct((prev) => ({ ...prev, [name]: value }))
     }
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            const file = e.target.files[0]
-            setImage(file)
-            setImagePreview(URL.createObjectURL(file))
+    const handleImageChange = (URL:string) => {
+        if (URL) {
+            setImage(URL)
+            setImagePreview(URL)
         }
     }
 
@@ -41,11 +59,11 @@ export default function CreateProductPage() {
         e.preventDefault()
         // Here you would typically send the data to your backend API
         console.log("Submitting product:", { ...product, image })
-        toast({
-            title: "Product Created",
-            description: "Your new product has been successfully added.",
-        })
-        router.push("/products/admin")
+      fetch(`/api/products/admin/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify([productId,product,image ]),
+      });
     }
 
     return (
@@ -76,19 +94,21 @@ export default function CreateProductPage() {
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="category">Категория</Label>
-                                <Select
-                                    value={product.category}
-                                    onValueChange={(value) => setProduct((prev) => ({ ...prev, category: value }))}
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select a category" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="Power Tools">Power Tools</SelectItem>
-                                        <SelectItem value="Hand Tools">Hand Tools</SelectItem>
-                                        <SelectItem value="Safety Equipment">Safety Equipment</SelectItem>
-                                    </SelectContent>
-                                </Select>
+                              {products.length  ? (
+                                <MultipleSelector
+                                  defaultOptions={OPTIONS}
+                                  placeholder="Выберите существующюю категорию или создайте новую"
+                                  creatable
+                                  onChange={(e)=>  setProduct((prev) => ({ ...prev, category: e[0].value }))}
+                                  emptyIndicator={
+                                    <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                                      Никаких категорий нету.
+                                    </p>
+                                  }
+                                />
+
+                              ) : ''}
+
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="stock">Наличие</Label>
@@ -115,7 +135,7 @@ export default function CreateProductPage() {
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="image">Картинка продукта</Label>
-                            <Input id="image" type="file" accept="image/*" onChange={handleImageChange} />
+                            <InputImage productId={productId} onChange={(url)=> handleImageChange(url)} />
                             {imagePreview && (
                                 <div className="mt-2">
                                     <img src={imagePreview || "/placeholder.svg"} alt="Product preview" className="max-w-xs rounded-md" />

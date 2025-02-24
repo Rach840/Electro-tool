@@ -30,6 +30,7 @@ import {useAuth} from "@/src/app/layouts";
 import {updateProduct} from "@/src/pages/products-panel/api/update-product";
 import { Textarea } from "@/src/shared/ui/textarea";
 import {Product} from "@/src/db/schema";
+import ExportButton from "@/src/shared/ui/export-button";
 
 export default function ProductsAdminPage() {
   const router = useRouter();
@@ -82,6 +83,7 @@ export default function ProductsAdminPage() {
         </CardHeader>
         <CardContent>
           <div className="flex justify-between items-center mb-6">
+
             <div className="w-1/3">
               <Label htmlFor="search">Найти продукты</Label>
               <Input
@@ -91,12 +93,15 @@ export default function ProductsAdminPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
+            <div className=" flex space-x-8 items-center">
+            <ExportButton response={products}/>
             <Button
               asChild
               className="bg-[#FFB800] hover:bg-[#E5A600] text-black"
             >
               <Link href="/products/admin/create">Создать новый продукт</Link>
             </Button>
+            </div>
           </div>
 
           {isLoading ? (
@@ -283,6 +288,7 @@ export default function ProductsAdminPage() {
           )}
         </CardContent>
       </Card>
+
     </div>
   );
 }
