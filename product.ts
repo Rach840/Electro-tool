@@ -16,7 +16,7 @@ import { createReadStream, statSync } from "fs";
     }),
     { expiresIn: 3600 },
   );
-  const res = await fetch(url, {
+  await fetch(url, {
     method: "POST",
     body: createReadStream(fileUri) as any,
     headers: {

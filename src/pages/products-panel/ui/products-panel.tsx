@@ -64,6 +64,7 @@ export default function ProductsAdminPage() {
       product.category.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
+
   const handleUpdateProduct = () => {
     if (editingProduct) {
       console.log("editing product", editingProduct);
@@ -74,7 +75,18 @@ export default function ProductsAdminPage() {
       setEditingProduct(null);
     }
   };
-
+const productRussia = products?.map((item) => {
+  return {
+    Артикул: item.id ,
+    Название: item.name ,
+    Создан:item.createdAt ,
+    Описание: item.description ,
+    Цена: item.price ,
+    Категория: item.category ,
+    Наличие: item.stock ,
+    Производитель: item.manufacturer ,
+  }
+})
   return (
     <div className="container mx-auto px-4 py-8">
       <Card>
@@ -94,7 +106,7 @@ export default function ProductsAdminPage() {
               />
             </div>
             <div className=" flex space-x-8 items-center">
-            <ExportButton response={products}/>
+            <ExportButton response={productRussia}/>
             <Button
               asChild
               className="bg-[#FFB800] hover:bg-[#E5A600] text-black"
@@ -122,7 +134,7 @@ export default function ProductsAdminPage() {
                 {filteredProducts.map((product) => (
                   <TableRow key={product.id}>
                     <TableCell>{product.name}</TableCell>
-                    <TableCell>${product.price.toFixed(2)}</TableCell>
+                    <TableCell>{product.price.toFixed(2)}₽</TableCell>
                     <TableCell>{product.category}</TableCell>
                     <TableCell>
                       <Badge
@@ -132,14 +144,17 @@ export default function ProductsAdminPage() {
                       </Badge>
                     </TableCell>
                     <TableCell>{product.manufacturer}</TableCell>
-                    <TableCell>
+                    <TableCell className='space-x-2'>
+                      <Button variant="outline" asChild>
+                        <Link href={`/products/admin/${product.id}`}>Подробнее</Link>
+                      </Button>
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button
                             variant="outline"
                             onClick={() => setEditingProduct(product)}
                           >
-                            Edit
+                            Изменить
                           </Button>
                         </DialogTrigger>
                         <DialogContent>

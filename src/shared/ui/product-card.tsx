@@ -48,8 +48,8 @@ export default function ProductCard({ product }: { product: Product }) {
           className="w-full h-48 object-cover mb-4 rounded"
         />
         <Badge className="mb-4">{product.category}</Badge>
-        <p className="text-md font-bold">{product.description}</p>
-        <p className="text-lg font-bold">${product.price.toFixed(2)}</p>
+        <p className="text-md font-bold">{product.description.slice(0,90)}...</p>
+        <p className="text-lg font-bold">{product.price.toFixed(2)}₽</p>
       </CardContent>
       <CardFooter className="flex justify-between">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -69,9 +69,9 @@ export default function ProductCard({ product }: { product: Product }) {
             <p className="text-lg font-bold mb-4">{product.description}</p>
 
             <p className="text-lg font-bold mb-4">
-              ${product.price.toFixed(2)}
+              {product.price.toFixed(2)} ₽
             </p>
-            <Button onClick={addToCart}>Добавить в корзину</Button>
+            <Button className='bg-[#FFB800] text-black hover:bg-[#E5A600]'  onClick={addToCart}>Добавить в корзину</Button>
           </DialogContent>
         </Dialog>
         <Dialog
@@ -85,7 +85,7 @@ export default function ProductCard({ product }: { product: Product }) {
             </DialogHeader>
           </DialogContent>
         </Dialog>
-        <Button onClick={addToCart}>Добавить в корзину</Button>
+        <Button className='bg-[#FFB800] hover:bg-[#E5A600] text-black' onClick={addToCart}>Добавить в корзину</Button>
       </CardFooter>
     </Card>
   );

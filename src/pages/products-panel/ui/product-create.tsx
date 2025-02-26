@@ -32,7 +32,6 @@ const productId =uuidv4()
     }
   });
 
-    const router = useRouter()
     const [product, setProduct] = useState({
         name: "",
         price: "",

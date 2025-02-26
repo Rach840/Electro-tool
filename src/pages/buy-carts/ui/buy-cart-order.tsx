@@ -68,7 +68,7 @@ export default function OrderDetailsPage() {
               <h3 className="text-lg font-semibold mb-2">
                 Информация о заказчике
               </h3>
-              <p> {order.user.name + order.user.lastName}</p>
+              <p> {order.user.name} {order.user.lastName}</p>
               <p>Электронная почта {order.user.email}</p>
               <p>
                 Номер телефона{" "}
@@ -98,9 +98,9 @@ export default function OrderDetailsPage() {
                 <TableRow key={item.id}>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.quantity}</TableCell>
-                  <TableCell>${item.price.toFixed(2)}</TableCell>
+                  <TableCell>{item.price.toFixed(2)}₽</TableCell>
                   <TableCell>
-                    ${(item.quantity * item.price).toFixed(2)}
+                    {(item.quantity * item.price).toFixed(2)}₽
                   </TableCell>
                 </TableRow>
               ))}
@@ -109,7 +109,7 @@ export default function OrderDetailsPage() {
 
           <div className="mt-6 text-right">
             <p className="text-lg font-semibold">
-              Сумма заказа: ${order.orderDetails.total.toFixed(2)}
+              Сумма заказа: {order.orderDetails.total.toFixed(2)}₽
             </p>
           </div>
         </CardContent>

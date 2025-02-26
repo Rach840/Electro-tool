@@ -1,0 +1,1 @@
+export {ProductDetailsPage as default} from '@/src/pages/products-panel';

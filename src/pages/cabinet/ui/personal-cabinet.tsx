@@ -14,6 +14,7 @@ import {
   CreditCard,
   AlertCircle,
   RussianRuble,
+  Frown,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/src/shared/ui/avatar";
 import { useAuth } from "@/src/app/layouts";
@@ -153,7 +154,7 @@ export default function ProfilePage() {
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">
-                        {orderTotal ? orderTotal : "Пока что нету"}
+                        {orderTotal ? orderTotal + "₽" : "Пока что нету"}
                       </div>
                     </CardContent>
                   </Card>
@@ -175,7 +176,7 @@ export default function ProfilePage() {
                   </AlertDialogTitle>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogAction>Continue</AlertDialogAction>
+                  <AlertDialogAction>Продолжить</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
@@ -270,14 +271,14 @@ export default function ProfilePage() {
                         {isEditing && (
                           <div className="flex justify-end space-x-2 pt-4">
                             <Button type="button" variant="outline">
-                              Cancel
+                              Закрыть
                             </Button>
                             <Button
                               type="submit"
                               onClick={() => setIsChangeDialogOpen(true)}
                               className="bg-[#FFB800] hover:bg-[#E5A600] text-black"
                             >
-                              Save Changes
+                              Сохранить изменения
                             </Button>
                           </div>
                         )}
@@ -294,7 +295,7 @@ export default function ProfilePage() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {orders.map((order) => (
+                      {orders.length >= 1 ?  orders.map((order) => (
                         <div key={order.id} className="border rounded-lg p-4">
                           <div className="flex justify-between items-start mb-2">
                             <div>
@@ -354,7 +355,7 @@ export default function ProfilePage() {
                                             {orderItem.name}
                                           </h3>
                                           <p className="text-gray-600">
-                                            ${orderItem.price.toFixed(2)}
+                                            {orderItem.price.toFixed(2)}₽
                                           </p>
                                         </div>
                                       </div>
@@ -402,7 +403,11 @@ export default function ProfilePage() {
                             </Dialog>
                           </div>
                         </div>
-                      ))}
+                      )) : (
+                        <div className="flex items-center justify-center py-10 space-x-2">
+                          <p className="text-2xl font-bold align-center ">Пока что нету</p> <Frown />
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>

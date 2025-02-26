@@ -53,7 +53,7 @@ export default function BuyCart() {
       (statusFilter === "all" ||
         order.status.toLowerCase() === statusFilter.toLowerCase()),
   );
-
+console.log(filteredOrders);
   return (
     <div className="container mx-auto px-4 py-8">
       <Card>
@@ -72,7 +72,7 @@ export default function BuyCart() {
               />
             </div>
             <div className="w-full md:w-48">
-              <Label htmlFor="status-filter">Filter by Status</Label>
+              <Label htmlFor="status-filter">Фильтровать по статусу</Label>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger id="status-filter">
                   <SelectValue placeholder="Select status" />
@@ -106,14 +106,14 @@ export default function BuyCart() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredOrders.map((order) => (
+                {filteredOrders?.map((order) => (
                   <TableRow key={order.id}>
                     <TableCell>{order.id}</TableCell>
                     <TableCell>{order.createdAt}</TableCell>
                     <TableCell>
-                      {order.user.name} {order.user.lastName}
+                      {order.user?.name ?order.user.name : 'Удаленный аккаунт' } {order.user?.lastName ? order.user.lastName : 'Удаленный аккаунт'}
                     </TableCell>
-                    <TableCell>${order.total.toFixed(2)}</TableCell>
+                    <TableCell>{order.total.toFixed(2)}₽</TableCell>
                     <TableCell>
                       <BadgeDeliver status={order.status} />
                     </TableCell>

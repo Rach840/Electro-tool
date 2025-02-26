@@ -16,7 +16,7 @@ export async function POST(request: Request) {
   const [userId, cartProductsId, cartItemsId] = await request.json();
 
   const cartProuctsPrice = await db
-    .select({ price: products.price })
+    .select({id:products.id ,stock: products.stock, price: products.price })
     .from(products)
     .where(inArray(products.id, cartProductsId));
 
@@ -42,6 +42,7 @@ export async function POST(request: Request) {
   await db.insert(orderItems).values(orderInsertItems);
   await db.delete(cartItems).where(inArray(cartItems.id, cartItemsId));
 
+
   const total = orderInsertItems.reduce(
     (acc, curr) => acc + curr.quantity * curr.price,
     0,
@@ -52,6 +53,14 @@ export async function POST(request: Request) {
     userId: userId,
     total: total,
     status: "PROCESSED",
+  });
+  cartItemsQuantity.forEach(async (item) =>  {
+    const productItem = cartProuctsPrice.find(
+      (product) => product.id == item.productId,
+    );
+
+    await db.update(products).set({stock: productItem.stock - item.quantity}).where(eq(products.id, item.productId))
+
   });
   const message = `Оформлен заказ ${orderId} %0AПользователя ${user[0].name} ${user[0]?.lastName} %0AАдресс ${user[0]?.address} %0AТоваров в заказе ${orderInsertItems.length} %0AСумма заказа ${total} %0AПочта: ${user[0].email} %0AНомер телефона: ${user[0]?.phone ? user[0].phone : "Не найдено"} %0AДля получения подробной информации зайдите в панель заказов`;
   await sendSalesMessageTelegram(message);

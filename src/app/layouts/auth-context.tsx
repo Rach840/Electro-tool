@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { createContext, useContext, useEffect } from "react";
 import type { User } from "@/src/db/schema";
 import { getCookies, deleteCookies, setCookie } from "./cookie";
+import { useRouter } from "next/navigation";
 
 type AuthContextType = {
   user: User | null;
@@ -15,6 +16,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
   const [user, setUser] = useState<User | boolean>(false);
   useEffect(() => {
     // Check for saved user in localStorage
@@ -54,6 +56,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     setUser(false);
     await deleteCookies();
+
+    router.replace("/");
   };
 
   const register = async (name: string, email: string, password: string) => {

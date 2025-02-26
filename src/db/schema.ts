@@ -26,7 +26,6 @@ export const products = mysqlTable("Products", {
   image: varchar("image", { length: 1000 }).default(''),
   price: int("price").notNull(),
   category: varchar("category", { length: 255 }).notNull(),
-  rating: int("rating").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   stock: int("stock"),
   manufacturer:varchar("manufacturer", { length: 255 }).default('ООО КСТ-ИНДАСТРИС'),

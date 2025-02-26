@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { Button } from "@/src/shared/ui/button";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { Frown, Minus, Plus, Trash2 } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -23,16 +23,21 @@ import {
   DialogTitle,
 } from "@/src/shared/ui/dialog";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Cart() {
+  const router = useRouter();
   const { user } = useAuth();
   const [cart, setCart] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   useEffect(() => {
     async function fetchProducts() {
-      const response = await fetch(`/api/cart/get-cart/${user.id}/cart`);
-      const data = await response.json();
-      setCart(data);
+      if (user){
+        const response = await fetch(`/api/cart/get-cart/${user.id}/cart`);
+        const data = await response.json();
+        setCart(data);
+      }
+
     }
     fetchProducts();
   }, [user]);
@@ -75,13 +80,17 @@ export default function Cart() {
     setCart(cartNew);
   }
   function createOrder() {
-    const cartItemsId = cart.map((item) => item.orderItem.id);
-    const cartProductsId = cart.map((item) => item.product.id);
-    fetch(`/api/orders/set-order`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify([user.id, cartProductsId, cartItemsId]),
-    });
+    if (user.address) {
+      const cartItemsId = cart.map((item) => item.orderItem.id);
+      const cartProductsId = cart.map((item) => item.product.id);
+      fetch(`/api/orders/set-order`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify([user.id, cartProductsId, cartItemsId]),
+      });
+router.push("/cabinet");
+    }
+
     setIsDialogOpen(true);
   }
   const total = cart.reduce(
@@ -91,20 +100,20 @@ export default function Cart() {
 
   const CartContent = () => (
     <div className="space-y-4">
-      {cart.map((item) => (
+      {cart?.map((item) => (
         <div
           key={item.id}
           className="flex items-center justify-between border-b pb-4"
         >
           <div className="flex items-center space-x-4">
             <img
-              src={`/placeholder.svg?height=80&width=80&text=${item.product.name}`}
+              src={item.product.image}
               alt={item.product.name}
               className="w-20 h-20 object-cover rounded"
             />
             <div>
               <h3 className="font-semibold">{item.product.name}</h3>
-              <p className="text-gray-600">${item.product.price.toFixed(2)}</p>
+              <p className="text-gray-600">{item.product.price.toFixed(2)}₽</p>
             </div>
           </div>
           <div className="flex items-center space-x-4">
@@ -148,12 +157,12 @@ export default function Cart() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className='text-xl'>
               {user.address
                 ? "Ваш заказ оформлен"
                 : "Для оформления заказа требуется указать адрес"}
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className='text-lg'>
               {user.address
                 ? "Можете посмотреть в личном кабинете"
                 : "Укажите адрес в личном кабинете"}
@@ -162,7 +171,7 @@ export default function Cart() {
           <div className="grid gap-4 py-4"></div>
           <DialogFooter>
             {user.address ? (
-              <div className="w-full justify-between ">
+              <div className="w-full flex space-x-3 justify-end ">
                 <Button onClick={() => setIsDialogOpen(false)}>Закрыть</Button>
                 <Button>
                   <Link href="./cabinet"> Перейти в личный кабинет</Link>
@@ -177,10 +186,10 @@ export default function Cart() {
         </DialogContent>
       </Dialog>
       <div className="flex justify-between items-center pt-4">
-        <p className="text-xl font-semibold">Total:</p>
-        <p className="text-xl font-bold">${total.toFixed(2)}</p>
+        <p className="text-xl font-semibold">Сумма:</p>
+        <p className="text-xl font-bold">{total.toFixed(2)}₽</p>
       </div>
-      <Button onClick={createOrder} className="w-full">
+      <Button onClick={createOrder} className="bg-[#FFB800] hover:bg-[#E5A600] text-black w-full">
         Оформить заказ
       </Button>
     </div>
@@ -190,7 +199,9 @@ export default function Cart() {
     <div>
       <h1 className="text-2xl font-bold mb-6">Ваша корзина</h1>
       {cart.length === 0 ? (
-        <p>Ваша корзина пуста.</p>
+          <div className="flex items-center justify-center py-10 space-x-2">
+            <p className="text-2xl font-bold align-center ">Ваша корзина пуста</p> <Frown />
+          </div>
       ) : isMobile ? (
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild>
